@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Test 1</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-gH2yIJqKdNHPEq0n4Mqa/HGKIhSkIHeL5AyhkYV8i59U5AR6csBvApHHNl/vI1Bx" crossorigin="anonymous">
+</head>
+
+<body>
+
+    <div class="container">
+        <div class="mb-5">
+            <h1 class="text-center text-danger">Cloud Computing - Test 1</h1>
+            <h1 class="text-center">Semester B, 2022</h1>
+            <h3 class="text-center">Tran Phuong Anh - s3914138</h3>
+        </div>
+
+        <div class="">
+            <a class="btn btn-primary" id="addNew" href="/add">Add New Employee</a>
+            <a class="btn btn-warning" id="edit" href="/edit">Update An Employee</a>
+            <a class="btn btn-danger" id="delete" href="/delete">Delete An Employee</a>
+        </div>
+        <h2>Display employees information</h2>
+
+        <div class="d-flex justify-content-center">
+            <div class="spinner-border" 
+                 role="status" id="loading">
+                <span class="sr-only">Loading...</span>
+            </div>
+        </div>
+    
+        <div>
+            <table class="table table-hover" id="employees">
+    
+            </table>
+        </div>
+    </div>
+
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-A3rJD856KowSb7dwlZdYEkO39Gagi7vIsF0jrRAoQmDKKtQBHUuLZ9AsSv4jD4Xa" crossorigin="anonymous">
+    </script>
+    <script>
+        
+        // api url
+        const api_url = 
+            "/getCSV";
+        
+        // Defining async function
+        async function getapi(url) {
+            
+            // Storing response
+            const response = await fetch(url);
+            
+            // Storing data in form of JSON
+            var data = await response.json();
+            console.log(data);
+            if (response) {
+                hideloader();
+            }
+            show(data);
+        }
+        // Calling that async function
+        getapi(api_url);
+        
+        // Function to hide the loader
+        function hideloader() {
+            document.getElementById('loading').style.display = 'none';
+        }
+        // Function to define innerHTML for HTML table
+        function show(data) {
+            let tab = 
+                `<thead>
+                  <tr>
+                    <th scope="col">ID</th>
+                    <th scope="col">FIRST_NAME</th>
+                    <th scope="col">LAST_NAME</th>
+                    <th scope="col">EMAIL</th>
+                    <th scope="col">PHONE_NUMBER</th>
+                    <th scope="col">HIRE_DATE</th>
+                    <th scope="col">JOB_ID</th>
+                    <th scope="col">SALARY</th>
+                    <th scope="col">COMMISSION_PCT</th>
+                    <th scope="col">MANAGER_ID</th>
+                    <th scope="col">DEPARTMENT_ID</th>
+                  </tr>
+                </thead>`;
+            
+            // Loop to access all rows 
+            for (let r of data) {
+                tab += `<tr> 
+                    <td>${r.EMPLOYEE_ID} </td>
+                    <td>${r.FIRST_NAME}</td>
+                    <td>${r.LAST_NAME}</td> 
+                    <td>${r.EMAIL}</td>
+                    <td>${r.PHONE_NUMBER} </td>
+                    <td>${r.HIRE_DATE}</td>
+                    <td>${r.JOB_ID}</td> 
+                    <td>${r.SALARY}</td>
+                    <td>${r.COMMISSION_PCT}</td>
+                    <td>${r.MANAGER_ID}</td>
+                    <td>${r.DEPARTMENT_ID}</td>
+
+                </tr>`;
+            }
+            // Setting innerHTML as tab variable
+            document.getElementById("employees").innerHTML = tab;
+        }
+    </script>
+</body>
+
+</html>
